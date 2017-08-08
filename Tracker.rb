@@ -4,29 +4,21 @@ load 'Driver.rb'
 class Tracker 
   # Default constructor - uses specified start and time to create this Trip
   def initialize()
-    # Trips will be saved as hashmaps from driver to a trip
+    # Trips will be saved as hashmaps from driver to an array of trips
     @driver_trips = Hash.new
   end
   
   # Records a trip taken by a driver
   def record_new_trip(driver, trip) 
-    driver_trips[driver] = trip
+    if driver_trips[driver]
+      # If the driver key already exists in the hashmap, add the new trip to its list of trips
+      driver_trips[driver].push(trip)
+    else
+      #Otherwise, create a new array for the driver with the new trip as its first entry
+      driver_trips[driver] = [trip]
+    end
   end
   
   # Read trips
   attr_reader :driver_trips
 end
-
-
-#Create a trip
-dan = Driver.new("Daniel")
-zak = Driver.new("Zakariya")
-first_trip = Trip.new(2, 5)
-first_trip = Trip.new(400, 600)
-
-
-# Create a driver and add the trip we created
-root = Tracker.new()
-root.record_new_trip(dan, first_trip)
-puts root.driver_trips[dan].start_time
-puts root.driver_trips[dan].end_time
