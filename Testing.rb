@@ -1,23 +1,21 @@
 load 'Tracker.rb'
 
-#Create a trip
+#Create a few arbitrary drivers and trips
 dan = Driver.new("Daniel")
 zak = Driver.new("Zakariya")
-first_trip = Trip.new(2, 5)
-second_trip = Trip.new(400, 600)
+
+# Create random trip times
+
+first_trip = Trip.new(Time.local(2008, 7, 8, 9, 10)  , Time.local(2008, 7, 8, 9, 10)  , 200)
+dans_first_trip = Trip.new(2, 5, 200)
+second_trip = Trip.new(400, 600, 3000)
 
 
-# Create a driver and add the trip we created
+# Record the drivers and trips in the tracker
 root = Tracker.new()
 root.record_new_trip(dan, first_trip)
 root.record_new_trip(zak, second_trip)
 
 driver_trips = root.driver_trips
 
-driver_trips.each do |driver, trips|
-  puts driver.name
-  
-  trips.each do |trip| 
-    puts "\t" + trip.start_time.to_s + "\t" + trip.end_time.to_s
-  end
-end
+puts root

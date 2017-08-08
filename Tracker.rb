@@ -19,6 +19,29 @@ class Tracker
     end
   end
   
+  # Override to_s function to report the trips by driver
+  def to_s
+    # Allocate the string that will contain driver names and trips
+    trip_report = ""
+        
+    # Loop through and print 
+    driver_trips.each do |driver, trips|
+      # Print the driver name
+      trip_report.concat(driver.name)
+      
+      # Loop through each trip for this driver and print the start and end time
+      trips.each do |trip| 
+        trip_report.concat("\t" + trip.start_time.to_s + "\t" + trip.end_time.to_s + "\t" +  trip.distance.to_s)
+      end
+      
+      # Add a newline so that each driver gets his own line
+      trip_report << "\n"
+    end
+    
+    # Return the trip report
+    trip_report
+  end
+  
   # Read trips
   attr_reader :driver_trips
 end
