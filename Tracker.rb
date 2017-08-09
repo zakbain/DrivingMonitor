@@ -1,11 +1,20 @@
 load 'Trip.rb'
-load 'Driver.rb'
 
 class Tracker 
   # Default constructor - uses specified start and time to create this Trip
-  def initialize()
+  def initialize
     # Trips will be saved as hashmaps from driver to an array of trips
     @driver_trips = Hash.new
+  end
+  
+  def add_new_driver(driver)
+    if driver_trips[driver]
+      # Can't add a driver that already exists
+       puts "WARNING: " + driver + " already exists in tracker" 
+    else
+      # otherwise, create a new empty array for the driver
+      driver_trips[driver] = []
+    end
   end
   
   # Records a trip taken by a driver
@@ -19,27 +28,61 @@ class Tracker
     end
   end
   
+  # Static method to calculate MPH based on given trips
+  def self.calculate_MPH(trips)
+    total_dist = 0
+    total_minutes = 0
+    
+    # Loop through each trip to get the total time driven and total distance
+    trips.each do |trip| 
+        # total minutes is 60 * total
+        total_minutes += (60 * trip.end_time.hours + trip.end_time.minutes) - (60 * trip.start_time.hours + trip.start_time.minutes)
+        total_dist += trip.distance
+    end
+    
+    # Miles / Hour = 60 * Miles / Minutes
+    (60*total_dist)/total_minutes
+  end
+  
+  def report
+    # Allocate the string that will contain driver names and trips
+    result = ""
+        
+    # Loop through and add to summary 
+    driver_trips.each do |driver, trips|
+      result.concat(driver, ": ")
+      
+
+      result.concat(Tracker.calculate_MPH(trips).to_s)
+      
+      # Add a newline so that each driver gets his own line
+      result << "\n"
+    end
+    
+    # return summary
+    result  
+  end
+  
   # Override to_s function to report the trips by driver
   def to_s
     # Allocate the string that will contain driver names and trips
-    trip_report = ""
+    summary = ""
         
-    # Loop through and print 
+    # Loop through and add to summary 
     driver_trips.each do |driver, trips|
-      # Print the driver name
-      trip_report.concat(driver.name)
+      summary.concat(driver, ":")
       
-      # Loop through each trip for this driver and print the start and end time
+      # Loop through each trip for this driver and add the start and end time to report
       trips.each do |trip| 
-        trip_report.concat("\t" + trip.start_time.to_s + "\t" + trip.end_time.to_s + "\t" +  trip.distance.to_s)
+        summary.concat("\t" + trip.start_time.to_s + "\t" + trip.end_time.to_s + "\t" +  trip.distance.to_s)
       end
       
       # Add a newline so that each driver gets his own line
-      trip_report << "\n"
+      summary << "\n"
     end
     
-    # Return the trip report
-    trip_report
+    # return summary
+    summary
   end
   
   # Read trips

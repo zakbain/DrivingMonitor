@@ -8,7 +8,7 @@ class Trip
 		@distance = distance
 	end
 	
-	# For now, attributes are made publicly accessible
+	# Make all attributes readable
 	attr_reader :start_time
 	attr_reader :end_time
 	attr_reader :distance
