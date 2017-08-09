@@ -8,7 +8,7 @@ class TC_MyTest < Test::Unit::TestCase
     @ZERO_O_CLOCK = 0
     @FIVE_O_CLOCK = 5
     @TEN_O_CLOCK = 10
-    @TWENTY_TWO_O_CLOCK = 22
+    @TWENTY_THREE_O_CLOCK = 23
     @TWENTY_ONE_O_CLOCK = 21
     
     # minute constants for testing
@@ -16,6 +16,7 @@ class TC_MyTest < Test::Unit::TestCase
     @FIFTEEN_MINUTES = 15
     @THIRTY_MINUTES = 30
     @FOURTY_FIVE_MINUTES = 45
+    @FIFTY_NINE_MINUTES = 59
     
     # Initialize 
     @EMMA_DRIVER = "Emma"
@@ -23,19 +24,38 @@ class TC_MyTest < Test::Unit::TestCase
     @DAN_DRIVER = "Dan"
     @TESSA_DRIVER = "Tessa"
     
+    # A few easy to use trips. Short is from 05:15 - 05:30 and 5 miles
+    start_time = SimpleTime.new(@FIVE_O_CLOCK, @FIFTEEN_MINUTES)
+    end_time = SimpleTime.new(@FIVE_O_CLOCK, @THIRTY_MINUTES)
+    distance = 5
+    @SHORT_TRIP = Trip.new(start_time, end_time, distance)
+    
+    # Medium trip is from 05:15 to 10:30 and 200 miles
+    start_time = SimpleTime.new(@FIVE_O_CLOCK, @FIFTEEN_MINUTES)
+    end_time = SimpleTime.new(@TEN_O_CLOCK, @THIRTY_MINUTES)
+    distance = 200
+    @MEDIUM_TRIP = Trip.new(start_time, end_time, distance)
+    
+    # Max trip is from 0:00 to 23:59 and 1500 miles
+    start_time = SimpleTime.new(@ZERO_O_CLOCK, @ZERO_MINUTES)
+    end_time = SimpleTime.new(@TEN_O_CLOCK, @FIFTY_NINE_MINUTES)
+    distance = 1500
+    @MAX_TRIP = Trip.new(start_time, end_time, distance)
+  
     @tracker = Tracker.new
+  
   end
 
   # SimpleTime Tests
   def test_construct_simple_time
-    # Locally assign hours and minutes 
+    # Locally assign hours and minutes for assertions
     hours = 10
     minutes = 30
     
     # Create a new time and check that its hours and minutes are correctly assigned
     ten_thirty = SimpleTime.new(hours, minutes)
-    assert(ten_thirty.hours == @TEN_O_CLOCK, "Hours attribute was not read correctly")
-    assert(ten_thirty.minutes == @THIRTY_MINUTES, "Minute attribute was not read correctly")
+    assert(ten_thirty.hours == hours, "Hours attribute was not read correctly")
+    assert(ten_thirty.minutes == minutes, "Minute attribute was not read correctly")
   end
   
   # Trip Tests
@@ -47,7 +67,7 @@ class TC_MyTest < Test::Unit::TestCase
     
     # Create a new trip and check that the start time hours and minutes are set to the expected values
     quick_trip = Trip.new(start_time, end_time, distance)
-    assert(quick_trip.distance == 20, "Distance attribute was not read correctly")
+    assert(quick_trip.distance == distance, "Distance attribute was not read correctly")
     assert(quick_trip.start_time.hours == @FIVE_O_CLOCK, "Start time hours attribute was not read correctly")
     assert(quick_trip.start_time.minutes == @FIFTEEN_MINUTES, "Start time minutes attribute was not read correctly")
     assert(quick_trip.end_time.hours == @TEN_O_CLOCK, "End time hours attribute was not read correctly")
@@ -58,13 +78,19 @@ class TC_MyTest < Test::Unit::TestCase
   def test_add_new_driver
     emma = "Emma";
     
+    # Add the driver and check that she's tracked
     @tracker.add_new_driver(@EMMA_DRIVER)
+    
     assert(@tracker.is_driver_tracked(emma), "")
   end
 
   # Test that adding an existing driver does not remove previous trip data for that driver
   def test_add_existing_driver
+    emma = "Emma"
+    emma_clone = "Emma" 
     
+    @tracker.add_new_driver(@EMMA_DRIVER)
+  
   end
   
   # Test that adding a driver with no name is not allowed
