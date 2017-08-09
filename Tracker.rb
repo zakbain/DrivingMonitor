@@ -40,8 +40,14 @@ class Tracker
         total_dist += trip.distance
     end
     
-    # Miles / Hour = 60 * Miles / Minutes
-    (60*total_dist)/total_minutes
+    # Only perform math if the driver has driven more than 0 minutes
+    if total_minutes > 0
+      # Miles / Hour = 60 * Miles / Minutes
+      (60*total_dist)/total_minutes
+    else
+      # 0 if they have no minutes driven
+      0
+    end
   end
   
   def report
@@ -52,8 +58,7 @@ class Tracker
     driver_trips.each do |driver, trips|
       result.concat(driver, ": ")
       
-
-      result.concat(Tracker.calculate_MPH(trips).to_s)
+      result.concat(Tracker.calculate_MPH(trips).to_s + " mph")
       
       # Add a newline so that each driver gets his own line
       result << "\n"
