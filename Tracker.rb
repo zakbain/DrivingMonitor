@@ -7,25 +7,36 @@ class Tracker
     @driver_trips = Hash.new
   end
   
+  # Adds a new driver to be tracked
   def add_new_driver(driver)
-    if driver_trips[driver]
+    if get_trips(driver)
       # Can't add a driver that already exists
        puts "WARNING: " + driver + " already exists in tracker" 
     else
       # otherwise, create a new empty array for the driver
-      driver_trips[driver] = []
+      @driver_trips[driver] = []
     end
+  end
+  
+  # Checks that a driver is being tracked
+  def is_driver_tracked(driver)
+    return get_trips(driver) != nil
   end
   
   # Records a trip taken by a driver
   def record_new_trip(driver, trip) 
-    if driver_trips[driver]
+    if get_trips(driver)
       # If the driver key already exists in the hashmap, add the new trip to its list of trips
-      driver_trips[driver].push(trip)
+      @driver_trips[driver].push(trip)
     else
       #Otherwise, create a new array for the driver with the new trip as its first entry
-      driver_trips[driver] = [trip]
+      @driver_trips[driver] = [trip]
     end
+  end
+  
+  # Gets the trips for a given driver
+  def get_trips(driver)
+    @driver_trips[driver]
   end
   
   # Static method to calculate MPH based on given trips
@@ -55,7 +66,7 @@ class Tracker
     result = ""
         
     # Loop through and add to summary 
-    driver_trips.each do |driver, trips|
+    @driver_trips.each do |driver, trips|
       result.concat(driver, ": ")
       
       result.concat(Tracker.calculate_MPH(trips).to_s + " mph")
@@ -74,7 +85,7 @@ class Tracker
     summary = ""
         
     # Loop through and add to summary 
-    driver_trips.each do |driver, trips|
+    @driver_trips.each do |driver, trips|
       summary.concat(driver, ":")
       
       # Loop through each trip for this driver and add the start and end time to report
@@ -89,7 +100,4 @@ class Tracker
     # return summary
     summary
   end
-  
-  # Read trips
-  attr_reader :driver_trips
 end

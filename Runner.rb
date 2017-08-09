@@ -52,7 +52,6 @@ run.process_input("Trip Dan 07:15 07:45 17.3")
 run.process_input("Trip Dan 06:12 06:32 21.8")
 run.process_input("Trip Alex 12:01 13:16 42")
 
-driver_trips = run.root.driver_trips
     
 puts run.root.report
 puts run.root.to_s
