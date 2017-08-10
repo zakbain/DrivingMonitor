@@ -11,7 +11,8 @@ class Coordinator
     @tracker = tracker
   end
   
-  def process_input(input)
+  # Processes the specified command input and makes changes to tracker
+  def process_cmd(input)
     # Split the input by spaces to get its separate parts
     input_parts = input.split(" ")
     command = input_parts[0]

@@ -163,21 +163,21 @@ class TC_MyTest < Test::Unit::TestCase
   
   # Test that you can add driver through command line
   def test_cmd_add_driver
-    @test_coordinator.process_input("Driver Emma")
+    @test_coordinator.process_cmd("Driver Emma")
     
     assert(@test_coordinator.tracker.is_driver_tracked(@EMMA_DRIVER), "Driver was not added correctly to tracker")
   end
   
   # Test that you can't call driver with no name
   def test_cmd_add_no_driver
-    @test_coordinator.process_input("Driver ")
+    @test_coordinator.process_cmd("Driver ")
     assert(!@test_coordinator.tracker.is_driver_tracked(@EMPTY_DRIVER), "Driver with no name should not be added to tracker")
   end
   
   # Test that you can add many drivers through the command line
   def test_cmd_add_many_drivers
-    @test_coordinator.process_input("Driver Emma")
-    @test_coordinator.process_input("Driver Tessa")
+    @test_coordinator.process_cmd("Driver Emma")
+    @test_coordinator.process_cmd("Driver Tessa")
     
     assert(@test_coordinator.tracker.is_driver_tracked(@EMMA_DRIVER), "Driver was not added to tracker")
     assert(@test_coordinator.tracker.is_driver_tracked(@TESSA_DRIVER), "Driver was not added to tracker")
@@ -185,8 +185,8 @@ class TC_MyTest < Test::Unit::TestCase
   
   # Test that you can add a trip to a driver
   def test_cmd_add_one_trip
-    @test_coordinator.process_input("Driver Emma")
-    @test_coordinator.process_input("Trip Emma 05:15 05:30 5")
+    @test_coordinator.process_cmd("Driver Emma")
+    @test_coordinator.process_cmd("Trip Emma 05:15 05:30 5")
     
     # Check that the first trip was added correctly
     first_trip = @test_coordinator.tracker.get_trips(@EMMA_DRIVER)[0]
@@ -195,16 +195,16 @@ class TC_MyTest < Test::Unit::TestCase
   
   # Test that the coordinator can handle an empty trip
   def test_cmd_add_empty_trip
-    @test_coordinator.process_input("Driver Emma")
-    @test_coordinator.process_input("Trip ")
+    @test_coordinator.process_cmd("Driver Emma")
+    @test_coordinator.process_cmd("Trip ")
    
     assert(@test_coordinator.tracker.get_trips(@EMMA_DRIVER), "No trips should be added")
   end
   
   # Test that the coordinator can handle a bad trip
   def test_cmd_add_bad_trip
-    @test_coordinator.process_input("Driver Emma")
-    @test_coordinator.process_input("Trip good luck trying this")
+    @test_coordinator.process_cmd("Driver Emma")
+    @test_coordinator.process_cmd("Trip good luck trying this")
     
     assert(@test_coordinator.tracker.get_trips(@EMMA_DRIVER), "No trips should be added")
   end
@@ -212,9 +212,9 @@ class TC_MyTest < Test::Unit::TestCase
   # Test that we can add many trips to a single driver
   def test_cmd_add_many_trips
     # Add Emma with many trips
-    @test_coordinator.process_input("Driver Emma")
-    @test_coordinator.process_input("Trip Emma 05:15 05:30 5")
-    @test_coordinator.process_input("Trip Emma 05:15 10:30 200")
+    @test_coordinator.process_cmd("Driver Emma")
+    @test_coordinator.process_cmd("Trip Emma 05:15 05:30 5")
+    @test_coordinator.process_cmd("Trip Emma 05:15 10:30 200")
     
     # Check that the first trip was added correctly
     first_trip = @test_coordinator.tracker.get_trips(@EMMA_DRIVER)[0]
@@ -224,16 +224,17 @@ class TC_MyTest < Test::Unit::TestCase
     assert(second_trip == @MEDIUM_TRIP, "Second trip was not the expected value")
   end
   
-  # Check that the report is printed correctly
+  # Test that the report is printed correctly
   def test_print_report_no_drivers
     assert(@test_coordinator.get_tracking_report.empty?, "Report should have been empty")
   end
   
+  # Test that the coordinator actually prints something if there are drivers
   def test_print_report_with_drivers
     # Add Emma with many trips
-    @test_coordinator.process_input("Driver Emma")
-    @test_coordinator.process_input("Trip Emma 05:15 05:30 5")
-    @test_coordinator.process_input("Trip Emma 05:15 10:30 200")
+    @test_coordinator.process_cmd("Driver Emma")
+    @test_coordinator.process_cmd("Trip Emma 05:15 05:30 5")
+    @test_coordinator.process_cmd("Trip Emma 05:15 10:30 200")
     
     assert(!@test_coordinator.get_tracking_report.empty?, "Report should not have been empty")
   end

@@ -78,16 +78,33 @@ class Tracker
   def report
     # Allocate the string that will contain driver names and trips
     result = ""
-        
-    # Loop through and add to summary 
-    @driver_trips.each do |driver, trips|
-      result.concat(driver, ": ")
       
+    driver_distances = []  
+        
+    # Loop through driver_trips to make an array whose elements are [driver, total_dist]
+    @driver_trips.each do |driver, trips|
+           
       # Calculate total distance and concat to result
       total_dist = Tracker.calculate_total_distance(trips)
+      
+      driver_distances.push([driver, total_dist])
+    end
+    
+    # sort
+    sorted_driver_distances = driver_distances.sort_by{|x,y|y}.reverse
+    
+    # Loop through the sorted distances     
+    sorted_driver_distances.each do |driver_dist|
+      # assign the driver and total distance from array
+      driver = driver_dist[0]
+      total_dist = driver_dist[1]
+      trips = @driver_trips[driver]
+      
+      # Add the driver name and total distance to resulting string
+      result.concat(driver, ": ")
       result.concat(total_dist.round.to_s + " miles")
       
-      # Calculate MPH and concat to result if greater than 0
+      # Calculate MPH and concat to resulting string if greater than 0
       total_mph = Tracker.calculate_MPH(trips)
       if total_mph > 0
          result.concat(" @ " + total_mph.round.to_s + " mph")
@@ -96,6 +113,7 @@ class Tracker
       # Add a newline so that each driver gets his own line
       result << "\n"
     end
+
     
     # return summary
     result  
