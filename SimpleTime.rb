@@ -10,6 +10,11 @@ class SimpleTime
     @minutes = minutes
   end
   
+  #Check equality by checking hour and minute equality
+  def ==(other_time)
+    @hours == other_time.hours && @minutes == other_time.minutes
+  end
+  
   # Print time as "HH:MM"
   def to_s
     # used to store hours and minutes as two digits (e.g.  7:5 => 07:05)

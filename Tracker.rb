@@ -9,12 +9,15 @@ class Tracker
   
   # Adds a new driver to be tracked
   def add_new_driver(driver)
-    if get_trips(driver)
-      # Can't add a driver that already exists
-       puts "WARNING: " + driver + " already exists in tracker" 
-    else
-      # otherwise, create a new empty array for the driver
-      @driver_trips[driver] = []
+    # Check that the driver name is not empty
+    if !driver.empty? 
+      if get_trips(driver)
+        # Can't add a driver that already exists
+         puts "WARNING: " + driver + " already exists in tracker" 
+      else
+        # otherwise, create a new empty array for the driver
+        @driver_trips[driver] = []
+      end
     end
   end
   
@@ -61,6 +64,17 @@ class Tracker
     end
   end
   
+  def self.calculate_total_distance(trips)
+    total_dist = 0
+    
+    # Loop through each trip and sum the total distance
+    trips.each do |trip| 
+        total_dist += trip.distance
+    end
+    
+    total_dist
+  end
+  
   def report
     # Allocate the string that will contain driver names and trips
     result = ""
@@ -69,7 +83,15 @@ class Tracker
     @driver_trips.each do |driver, trips|
       result.concat(driver, ": ")
       
-      result.concat(Tracker.calculate_MPH(trips).to_s + " mph")
+      # Calculate total distance and concat to result
+      total_dist = Tracker.calculate_total_distance(trips)
+      result.concat(total_dist.round.to_s + " miles")
+      
+      # Calculate MPH and concat to result if greater than 0
+      total_mph = Tracker.calculate_MPH(trips)
+      if total_mph > 0
+         result.concat(" @ " + total_mph.round.to_s + " mph")
+      end
       
       # Add a newline so that each driver gets his own line
       result << "\n"
