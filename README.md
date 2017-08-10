@@ -1,9 +1,9 @@
 # DrivingMonitor
 A project for keeping track of drivers and the trips they make. With this information,
-calculations can be made for total distance driven by each driver and their average MPH.<br />    
+calculations can be made for total distance driven by each driver and their average MPH.   
 
 ## Getting Started
-To run this project, open a command line, navigate to the "DrivingMonitor" directory, <br />
+To run this project, open a command line, navigate to the "DrivingMonitor" directory,
 and enter the following command: 
 ```
 ruby Runner.rb input.txt 	- where input.txt is the name of the input text file
@@ -17,17 +17,17 @@ The report is formatted such that for every driver, the following is printed:
 
 ## Solution
 - SimpleTime.rb was created to store time in an HH:MM format. 
-	This was used instead of the built in class time as the added complexity of year,
+  * This was used instead of the built in class time as the added complexity of year,
 	month, etc was not needed.
 - Trip.rb was created to store trip start time, end time, and distance travelled.
 - Tracker.rb was introduced to store a collection of drivers and their trips.
-	For efficiency purposes, a hash table was used from driver_name to array of trips.
+  * For efficiency purposes, a hash table was used from driver_name to array of trips.
 	Tracker.rb exposes functions to add a driver, add a trip, check if a driver is tracked,
 	and get the trips for a specific driver
 	A few class methods exist to help with calculating total distance and average MPH
 	Finally, the report method returns a report of the drivers and trips
 - Coordinator.rb was created to process command line input
-	A Coordinator must be passed in a Tracker when initialized
+  * A Coordinator must be passed in a Tracker when initialized
 	The function process_cmd takes in a command string and makes changes to the tracker
 - Runner.rb was created for running the entire project and handling file IO
 	
