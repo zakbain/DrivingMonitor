@@ -1,5 +1,6 @@
 require "test/unit"
 load "Coordinator.rb"
+load "Tracker.rb"
 
 class TC_MyTest < Test::Unit::TestCase
   # Performed before every test
