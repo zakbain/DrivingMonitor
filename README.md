@@ -5,11 +5,11 @@ calculations can be made for total distance driven by each driver and their aver
 ## Getting Started
 To run this project, open a command line, navigate to the "DrivingMonitor" directory, 
 and enter the following command: 
-	```ruby Runner.rb input.txt 	- where input.txt is the name of the input text file
+```ruby Runner.rb input.txt 	- where input.txt is the name of the input text file
 
 A report will be written to "output.txt"
 The report is formatted such that for every driver, the following is printed:
-	```{driver_name}: {total_miles} miles @ {avg_mph} MPH
+```{driver_name}: {total_miles} miles @ {avg_mph} MPH
 
 ## Solution
 First, SimpleTime.rb was created to store time in an HH:MM format. 
@@ -29,7 +29,7 @@ Finally, Runner.rb was created for running the entire project and handling file 
 	
 ## Testing
 To run the test suite, call
-	```ruby Testing.rb
+```ruby Testing.rb
 	
 ## Testing Approach
 Each of the classes' methods are tested with "good" and "bad" inputs. 
